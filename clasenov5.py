@@ -32,4 +32,8 @@ if response.status_code == 200:
     # Gráfico de barras basado en el conteo de IDs
     fig, ax = plt.subplots()
     df['userId'].value_counts().sort_index().plot(kind='bar', ax=ax)
-
+    ax.set_title('Conteo de User ID')
+    ax.set_xlabel('User ID')
+    ax.set_ylabel('Frecuencia')
+    # Mostrar el gráfico en Streamlit
+    st.pyplot(fig)
