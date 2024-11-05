@@ -1,7 +1,8 @@
 import streamlit as st
+import matplotlib.pyplot as plt
 import pandas as pd
 import requests
-import matplotlib.pyplot as plt
+
 
 # Título de la aplicación
 st.title('Aplicación Web: Datos desde una API REST')
