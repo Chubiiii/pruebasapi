@@ -1,10 +1,15 @@
-import requests
-import pandas as pd
 import streamlit as st
-st.title("Aplicacion web, datos desde una API")
-url = "https://jsonplaceholder.typicode.com/posts/1"
-response = requests.get(url)
+import pandas as pd
+import requests
+import matplotlib.pyplot as plt
 
+# Título de la aplicación
+st.title('Aplicación Web: Datos desde una API REST')
+# URL de la API REST (puedes cambiarla por cualquier API pública que devuelva JSON)
+api_url = 'https://jsonplaceholder.typicode.com/posts'
+# Realizar la petición a la API
+response = requests.get(api_url)
+# Verificar que la respuesta sea exitosa (código 200)
 if response.status_code == 200:
     # Convertir los datos JSON en un DataFrame de Pandas
     data = response.json()
@@ -24,3 +29,7 @@ if response.status_code == 200:
     df_filtrado = df[df['id'] <= id_filtro]
     st.write(f'Mostrando datos donde ID <= {id_filtro}:')
     st.write(df_filtrado)
+    # Gráfico de barras basado en el conteo de IDs
+    fig, ax = plt.subplots()
+    df['userId'].value_counts().sort_index().plot(kind='bar', ax=ax)
+
