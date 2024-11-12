@@ -1,32 +1,38 @@
-import streamlit as st
-import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
 
-# Definir nombres de usuarios y contraseñas
-nombres = ['Usuario Uno', 'Usuario Dos']
-nombres_usuario = ['usuario1', 'usuario2']
-contrasenas = ['contrasena1', 'contrasena2']
+with open('../config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
-# Encriptar las contraseñas
-hashed_passwords = stauth.Hasher(contrasenas).generate()
+# Pre-hashing all plain text passwords once
+# stauth.Hasher.hash_passwords(config['credentials'])
 
-# Configurar el autenticador
 authenticator = stauth.Authenticate(
-    nombres,
-    nombres_usuario,
-    hashed_passwords,
-    'nombre_cookie',
-    'clave_firma',
-    cookie_expiry_days=30
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days']
 )
 
-# Renderizar el formulario de inicio de sesión
-nombre, estado_autenticacion, nombre_usuario = authenticator.login('Iniciar sesión', 'main')
+try:
+    authenticator.login()
+except Exception as e:
+    st.error(e)
+    
+if st.session_state['authentication_status']:
+    authenticator.logout()
+    st.write(f'Welcome *{st.session_state["name"]}*')
+    st.title('Some content')
+elif st.session_state['authentication_status'] is False:
+    st.error('Username/password is incorrect')
+elif st.session_state['authentication_status'] is None:
+    st.warning('Please enter your username and password')
 
-if estado_autenticacion:
-    st.write(f'Bienvenido/a *{nombre}*')
-    st.write('Accediste exitosamente a la aplicación.')
-    # Aquí puedes colocar el resto de tu aplicación
-elif estado_autenticacion == False:
-    st.error('Nombre de usuario o contraseña incorrectos')
-elif estado_autenticacion == None:
-    st.warning('Por favor ingresa tu nombre de usuario y contraseña')
+try:
+    email_of_registered_user, \
+    username_of_registered_user, \
+    name_of_registered_user = authenticator.register_user(pre_authorized=config['pre-authorized']['emails'])
+    if email_of_registered_user:
+        st.success('User registered successfully')
+except Exception as e:
+    st.error(e)
