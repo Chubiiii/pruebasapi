@@ -1,26 +1,28 @@
-cookie:
-  expiry_days: 30
-  key: some_signature_key # Must be a string
-  name: some_cookie_name
 credentials:
   usernames:
     chubi:
-      email: vic.penaj@gmail.com
-      failed_login_attempts: 0 # Will be managed automatically
-      first_name: Vicente
-      last_name: Pena
-      logged_in: False # Will be managed automatically
-      password: abc # Will be hashed automatically
-      roles: # Optional
-      - admin
-      - editor
-      - viewer
+      email: 'vic.penaj@gmail.com'
+      first_name: 'Vicente'
+      last_name: 'Pena'
+      password: 'abc'  # Este será reemplazado por el hash automáticamente
+      roles:
+        - 'admin'
+        - 'editor'
+        - 'viewer'
     nacho:
-      email: ignacioberriosvb@gmail.com
-      failed_login_attempts: 0 # Will be managed automatically
-      first_name: Ignacio
-      last_name: Berios
-      logged_in: False # Will be managed automatically
-      password: def # Will be hashed automatically
-      roles: # Optional
-      - viewer
+      email: 'ignacioberriosvb@gmail.com'
+      first_name: 'Ignacio'
+      last_name: 'Berrios'
+      password: 'def'  # Este será reemplazado por el hash automáticamente
+      roles:
+        - 'viewer'
+
+cookie:
+  expiry_days: 30
+  key: 'some_signature_key' # Debe ser una cadena segura
+  name: 'some_cookie_name'
+
+preauthorized:
+  emails:
+    - 'vic.penaj@gmail.com'
+    - 'ignacioberriosvb@gmail.com'
