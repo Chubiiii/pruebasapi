@@ -3,9 +3,9 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-# Cargar la configuración desde 'config.yaml'
+# Cargar la configuración
 with open('config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+    config = yaml.safe_load(file)
 
 # Configurar el autenticador
 authenticator = stauth.Authenticate(
@@ -13,29 +13,26 @@ authenticator = stauth.Authenticate(
     cookie_name=config['cookie']['name'],
     key=config['cookie']['key'],
     cookie_expiry_days=config['cookie']['expiry_days'],
-    preauthorized=config['preauthorized']
+    preauthorized=config.get('preauthorized')
 )
 
 # Renderizar el formulario de inicio de sesión
 nombre, estado_autenticacion, nombre_usuario = authenticator.login('Iniciar sesión', 'main')
 
 if estado_autenticacion:
-    # Mostrar botón de logout
     authenticator.logout('Cerrar sesión', 'sidebar')
-    
     st.sidebar.write(f'Bienvenido/a *{nombre}*')
     st.title('Contenido de la aplicación')
-    # Aquí puedes colocar el contenido principal de tu aplicación
+    # Aquí coloca el contenido principal de tu aplicación
 elif estado_autenticacion == False:
     st.error('Nombre de usuario o contraseña incorrectos')
 elif estado_autenticacion == None:
     st.warning('Por favor ingresa tu nombre de usuario y contraseña')
 
-# Permitir registro de nuevos usuarios si no están autenticados
+# Registro de nuevos usuarios
 if estado_autenticacion != True:
     try:
-        # Formulario de registro de usuario
-        if authenticator.register_user('Regístrate', preauthorization=True):
+        if authenticator.register_user('Regístrate', preauthorization=False):
             st.success('Usuario registrado exitosamente')
             st.info('Por favor, inicia sesión con tus credenciales')
     except Exception as e:
