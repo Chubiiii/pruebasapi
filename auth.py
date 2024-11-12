@@ -3,6 +3,7 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
+
 # Cargar la configuración
 with open('config.yaml') as file:
     config = yaml.safe_load(file)
@@ -17,7 +18,7 @@ authenticator = stauth.Authenticate(
 )
 
 # Renderizar el formulario de inicio de sesión
-nombre, estado_autenticacion, nombre_usuario = authenticator.login('Iniciar sesión', 'main')
+nombre, estado_autenticacion, nombre_usuario = authenticator.login(button_text='Iniciar sesión',location='main')
 
 if estado_autenticacion:
     authenticator.logout('Cerrar sesión', 'sidebar')
