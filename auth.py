@@ -4,10 +4,10 @@ import streamlit_authenticator as stauth
 # Definir nombres de usuarios y contraseñas
 nombres = ['Usuario Uno', 'Usuario Dos']
 nombres_usuario = ['usuario1', 'usuario2']
-contraseñas = ['contraseña1', 'contraseña2']
+contrasenas = ['contrasena1', 'contrasena2']
 
 # Encriptar las contraseñas
-hashed_passwords = stauth.Hasher(contraseñas).generate()
+hashed_passwords = stauth.Hasher(contrasenas).generate()
 
 # Configurar el autenticador
 authenticator = stauth.Authenticate(
