@@ -4,7 +4,7 @@ credentials:
       email: 'vic.penaj@gmail.com'
       first_name: 'Vicente'
       last_name: 'Pena'
-      password: 'abc'  # Este será reemplazado por el hash automáticamente
+      password: '$2b$12$IkZfvc4weLkbAREmmSeEoeShn4dwR8AfoRbS8hmtL3wYOo7QSwFCG'  # Este será reemplazado por el hash automáticamente
       roles:
         - 'admin'
         - 'editor'
@@ -13,7 +13,7 @@ credentials:
       email: 'ignacioberriosvb@gmail.com'
       first_name: 'Ignacio'
       last_name: 'Berrios'
-      password: 'def'  # Este será reemplazado por el hash automáticamente
+      password: '$2b$12$xX3lN5c8Oz06zR27fZzeVOPC7YHGrG2kWO48wFYqOyKuaXvSgnrde'  # Este será reemplazado por el hash automáticamente
       roles:
         - 'viewer'
 
