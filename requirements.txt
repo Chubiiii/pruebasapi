@@ -2,3 +2,5 @@ streamlit
 streamlit-authenticator
 pandas
 matplotlib
+yalm
+SafeLoader
