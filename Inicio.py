@@ -1,23 +1,24 @@
-# Home.py
 import streamlit as st
-from PIL import Image
 
-st.set_page_config(page_title="Inicio", page_icon="🏠", layout="centered")
+# -------------------- Configuración de la Página --------------------
+st.set_page_config(page_title="Inicio", page_icon="🏠", layout="wide")
 
-# Agregar una imagen
-image = Image.open("imagen.png")
-st.image(image, use_column_width=True)
-
-# Título de bienvenida
-st.title("¡Bienvenido a Nuestra Aplicación!")
-
-# Descripción o mensaje
-st.write("""
-    Esta es la página de inicio de tu aplicación. Haz clic en el botón de abajo para iniciar sesión y acceder a todas las funcionalidades.
-""")
-
-# Botón de bienvenida
-if st.button("Iniciar Sesión"):
-    js = "window.location.href = '/Login'"
-    html = f"<script>{js}</script>"
-    st.markdown(html, unsafe_allow_html=True)
+# -------------------- Crear un Contenedor de Pantalla Completa --------------------
+with st.container():
+    # Dividir la página en una sola columna
+    col = st.columns(1)[0]
+    
+    # Mostrar la imagen en la columna
+    col.image("ruta/a/tu/imagen.jpg", use_column_width=True)
+    
+    # Espacio flexible para empujar el botón hacia abajo
+    col.empty()
+    
+    # Crear un contenedor para el botón centrado
+    button_col1, button_col2, button_col3 = st.columns([1, 2, 1])
+    
+    with button_col2:
+        if st.button("Continuar"):
+            # Acción al hacer clic en el botón
+            st.experimental_set_query_params(page="Login")
+            st.experimental_rerun()
