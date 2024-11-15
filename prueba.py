@@ -1,90 +1,109 @@
 """
-Script description: Optimized login script using Streamlit-Authenticator.
-
+Script description: This script imports tests the Streamlit-Authenticator package. 
 Libraries imported:
-- yaml: For loading configuration files.
-- streamlit: For building the web application.
-- streamlit_authenticator: For handling authentication.
+- yaml: Module implementing the data serialization used for human readable documents.
+- streamlit: Framework used to build pure Python web applications.
 """
 
 import yaml
 import streamlit as st
-import streamlit_authenticator as stauth
 from yaml.loader import SafeLoader
-from streamlit_authenticator.utilities import (
-    CredentialsError,
-    LoginError,
-    RegisterError
-)
+import streamlit_authenticator as stauth
+from streamlit_authenticator.utilities import (CredentialsError,
+                                               ForgotError,
+                                               Hasher,
+                                               LoginError,
+                                               RegisterError,
+                                               ResetError,
+                                               UpdateError)
 
-# -------------------- Configuración de la Página --------------------
-st.set_page_config(page_title="Login", page_icon="🔑", layout="centered")
+st.set_page_config(page_title="Login", page_icon="🔑")
+# Loading config file
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
-# -------------------- Cargar Configuración --------------------
-@st.cache_resource
-def load_config(config_path='config.yaml'):
-    with open(config_path) as file:
-        return yaml.load(file, Loader=SafeLoader)
+# Pre-hashing all plain text passwords once
+# stauth.Hasher.hash_passwords(config['credentials'])
 
-config = load_config()
-
-# -------------------- Crear Objeto Autenticador --------------------
+# Creating the authenticator object
 authenticator = stauth.Authenticate(
-    credentials=config['credentials'],
-    cookie_name=config['cookie']['name'],
-    key=config['cookie']['key'],
-    cookie_expiry_days=config['cookie']['expiry_days']
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days']
 )
 
-# -------------------- Widget de Inicio de Sesión --------------------
+# authenticator = stauth.Authenticate(
+#     '../config.yaml'
+# )
+
+# Creating a login widget
 try:
-    name, authentication_status, username = authenticator.login('Iniciar sesión', 'main')
+    authenticator.login()
 except LoginError as e:
     st.error(e)
 
-# -------------------- Post-Autenticación --------------------
-if authentication_status:
-    authenticator.logout('Cerrar sesión', 'sidebar')
-    st.sidebar.write(f'Bienvenido/a *{name}*')
-    st.title('Contenido de la Aplicación')
-    st.write("Aquí va el contenido principal de tu aplicación.")
+# Authenticating user
+if st.session_state['authentication_status']:
+    authenticator.logout()
+    st.write(f'Welcome *{st.session_state["name"]}*')
+    st.title('Some content')
+elif st.session_state['authentication_status'] is False:
+    st.error('Username/password is incorrect')
+elif st.session_state['authentication_status'] is None:
+    st.warning('Please enter your username and password')
 
-elif authentication_status is False:
-    st.error('Nombre de usuario o contraseña incorrectos.')
+# Creating a password reset widget
+if st.session_state['authentication_status']:
+    try:
+        if authenticator.reset_password(st.session_state['username']):
+            st.success('Password modified successfully')
+    except (CredentialsError, ResetError) as e:
+        st.error(e)
 
-elif authentication_status is None:
-    st.warning('Por favor, ingresa tu nombre de usuario y contraseña.')
+# Creating a new user registration widget
+try:
+    (email_of_registered_user,
+        username_of_registered_user,
+        name_of_registered_user) = authenticator.register_user()
+    if email_of_registered_user:
+        st.success('User registered successfully')
+except RegisterError as e:
+    st.error(e)
 
-# -------------------- Registro de Nuevos Usuarios --------------------
-st.markdown("---")
-st.header("Registrar Nuevo Usuario")
+# Creating a forgot password widget
+try:
+    (username_of_forgotten_password,
+        email_of_forgotten_password,
+        new_random_password) = authenticator.forgot_password()
+    if username_of_forgotten_password:
+        st.success('New password sent securely')
+        # Random password to be transferred to the user securely
+    elif not username_of_forgotten_password:
+        st.error('Username not found')
+except ForgotError as e:
+    st.error(e)
 
-with st.form("registration_form"):
-    new_name = st.text_input("Nombre Completo")
-    new_username = st.text_input("Nombre de Usuario")
-    new_email = st.text_input("Correo Electrónico")
-    new_password = st.text_input("Contraseña", type="password")
-    new_password_confirm = st.text_input("Confirmar Contraseña", type="password")
-    submit_button = st.form_submit_button("Registrar")
+# Creating a forgot username widget
+try:
+    (username_of_forgotten_username,
+        email_of_forgotten_username) = authenticator.forgot_username()
+    if username_of_forgotten_username:
+        st.success('Username sent securely')
+        # Username to be transferred to the user securely
+    elif not username_of_forgotten_username:
+        st.error('Email not found')
+except ForgotError as e:
+    st.error(e)
 
-    if submit_button:
-        if new_password != new_password_confirm:
-            st.error("Las contraseñas no coinciden.")
-        elif new_username in config['credentials']['usernames']:
-            st.error("El nombre de usuario ya existe.")
-        else:
-            try:
-                authenticator.register_user(
-                    name=new_name,
-                    email=new_email,
-                    username=new_username,
-                    password=new_password,
-                    config=config
-                )
-                st.success("Usuario registrado exitosamente.")
-                
-                # Guardar la configuración actualizada
-                with open('config.yaml', 'w') as file:
-                    yaml.dump(config, file, default_flow_style=False)
-            except RegisterError as e:
-                st.error(e)
+# Creating an update user details widget
+if st.session_state['authentication_status']:
+    try:
+        if authenticator.update_user_details(st.session_state['username']):
+            st.success('Entry updated successfully')
+    except UpdateError as e:
+        st.error(e)
+
+# Saving config file
+with open('../config.yaml', 'w', encoding='utf-8') as file:
+    yaml.dump(config, file, default_flow_style=False)
