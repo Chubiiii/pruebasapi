@@ -4,7 +4,7 @@ import streamlit as st
 st.set_page_config(page_title="Inicio", page_icon="🏠", layout="wide")
 
 # -------------------- Mostrar Imagen de Fondo --------------------
-image_path = "imagen.png"  # Asegúrate de que esta ruta sea correcta
+image_path = Image.open("imagen.png")
 
 try:
     st.image(image_path, use_column_width=True)
