@@ -5,7 +5,7 @@ from PIL import Image
 st.set_page_config(page_title="Inicio", page_icon="🏠", layout="centered")
 
 # Agregar una imagen
-image = Image.open("ruta/a/tu/imagen_de_bienvenida.png")
+image = Image.open("imagen.png")
 st.image(image, use_column_width=True)
 
 # Título de bienvenida
