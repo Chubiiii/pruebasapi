@@ -32,10 +32,15 @@ authenticator = stauth.Authenticate(
 )
 
 # -------------------- Widget de Inicio de Sesión --------------------
+# Inicializar variables para evitar errores de variables no definidas
+authentication_status = None
+name = ""
+username = ""
+
 try:
     try:
         # Intentar usar la versión que retorna valores
-        authenticator.login()
+        name, authentication_status, username = authenticator.login('Iniciar sesión', location='main')
     except TypeError:
         # Fallback para versiones que no retornan valores
         authenticator.login()
