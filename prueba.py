@@ -18,6 +18,8 @@ from streamlit_authenticator.utilities import (CredentialsError,
                                                ResetError,
                                                UpdateError)
 
+st.set_page_config(page_title="Login", page_icon="🔑")
+
 # Loading config file
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
