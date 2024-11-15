@@ -33,7 +33,7 @@ if imagen_fondo:
         # Crear tres columnas con proporciones [1, 2, 1] para centrar el botón
         col1, col2, col3 = st.columns([1, 2, 1])
 
-        with col2:
+        with col3:
             if st.button("Continuar"):
                 # Acción al hacer clic en el botón
                 # Por ejemplo, cambiar los parámetros de consulta para navegar a la página de Login
