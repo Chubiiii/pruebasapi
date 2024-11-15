@@ -3,22 +3,26 @@ import streamlit as st
 # -------------------- Configuración de la Página --------------------
 st.set_page_config(page_title="Inicio", page_icon="🏠", layout="wide")
 
-# -------------------- Crear un Contenedor de Pantalla Completa --------------------
-with st.container():
-    # Dividir la página en una sola columna
-    col = st.columns(1)[0]
-    
-    # Mostrar la imagen en la columna
-    col.image("imagen.png", use_column_width=True)
-    
-    # Espacio flexible para empujar el botón hacia abajo
-    col.empty()
-    
-    # Crear un contenedor para el botón centrado
-    button_col1, button_col2, button_col3 = st.columns([1, 2, 1])
-    
-    with button_col2:
+# -------------------- Mostrar Imagen de Fondo --------------------
+image_path = "imagen.png"  # Asegúrate de que esta ruta sea correcta
+
+try:
+    st.image(image_path, use_column_width=True)
+except FileNotFoundError:
+    st.error(f"No se encontró la imagen en la ruta especificada: {image_path}")
+except Exception as e:
+    st.error(f"Error al cargar la imagen: {e}")
+
+# -------------------- Contenedor para el Botón --------------------
+button_container = st.empty()
+
+# Crear tres columnas y colocar el botón en la columna central dentro del contenedor
+with button_container.container():
+    # Usar columnas para centrar el botón
+    col1, col2, col3 = st.columns([1, 2, 1])
+
+    with col2:
         if st.button("Continuar"):
-            # Acción al hacer clic en el botón
+            # Acción al hacer clic en el botón, por ejemplo, redirigir a otra página
             st.experimental_set_query_params(page="Login")
             st.experimental_rerun()
