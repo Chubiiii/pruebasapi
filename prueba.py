@@ -33,7 +33,15 @@ authenticator = stauth.Authenticate(
 
 # -------------------- Widget de Inicio de Sesión --------------------
 try:
-    name, authentication_status, username = authenticator.login('Iniciar sesión', 'main')
+    try:
+        # Intentar usar la versión que retorna valores
+        name, authentication_status, username = authenticator.login('Iniciar sesión', 'main')
+    except TypeError:
+        # Fallback para versiones que no retornan valores
+        authenticator.login()
+        name = st.session_state.get('name')
+        authentication_status = st.session_state.get('authentication_status')
+        username = st.session_state.get('username')
 except LoginError as e:
     st.error(e)
 
@@ -42,7 +50,7 @@ if authentication_status:
     # Mostrar opciones de cierre de sesión
     authenticator.logout('Cerrar sesión', 'sidebar')
     
-    # Mensaje de bienvenida
+    # Mensaje de bienvenida y contenido protegido
     st.sidebar.write(f'Bienvenido/a *{name}*')
     st.title('Contenido de la Aplicación')
     st.write("Aquí va el contenido principal de tu aplicación.")
