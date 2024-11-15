@@ -17,25 +17,24 @@ def cargar_imagen(path):
         st.error(f"Ocurrió un error al cargar la imagen: {e}")
 
 # Ruta de la imagen
-ruta_imagen = "imagen.png"  # Reemplaza con la ruta correcta si está en una subcarpeta
+ruta_imagen = "imagen.png"  # Asegúrate de que esta ruta sea correcta
 
 # Cargar la imagen
 imagen_fondo = cargar_imagen(ruta_imagen)
 
-# -------------------- Mostrar la Imagen de Fondo --------------------
+# -------------------- Contenedor Principal --------------------
 if imagen_fondo:
-    st.image(imagen_fondo, use_column_width=True)
-
-    # -------------------- Contenedor para el Botón --------------------
     with st.container():
-        # Agregar espacio para empujar el botón hacia abajo
-        # Ajusta el número de iteraciones según el tamaño de la pantalla
-        for _ in range(40):
+        # Mostrar la imagen
+        st.image(imagen_fondo, use_column_width=True)
+        
+        # Espacio flexible reducido
+        for _ in range(15):  # Menos iteraciones para subir el botón
             st.write("")
-
-        # Crear tres columnas con proporciones [1, 2, 1]
+        
+        # Crear columnas para centrar el botón
         col1, col2, col3 = st.columns([1, 2, 1])
-
+        
         with col2:
             if st.button("Continuar"):
                 # Acción al hacer clic en el botón
