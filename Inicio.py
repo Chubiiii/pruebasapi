@@ -27,15 +27,17 @@ if imagen_fondo:
     st.image(imagen_fondo, use_column_width=True)
 
     # -------------------- Contenedor para el Botón --------------------
-    button_container = st.empty()
+    with st.container():
+        # Agregar espacio para empujar el botón hacia abajo
+        # Ajusta el número de iteraciones según el tamaño de la pantalla
+        for _ in range(40):
+            st.write("")
 
-    with button_container.container():
-        # Crear tres columnas con proporciones [1, 2, 1] para centrar el botón
+        # Crear tres columnas con proporciones [1, 2, 1]
         col1, col2, col3 = st.columns([1, 2, 1])
 
-        with col3:
+        with col2:
             if st.button("Continuar"):
                 # Acción al hacer clic en el botón
-                # Por ejemplo, cambiar los parámetros de consulta para navegar a la página de Login
                 st.experimental_set_query_params(page="Login")
                 st.experimental_rerun()
