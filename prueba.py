@@ -35,7 +35,7 @@ authenticator = stauth.Authenticate(
 try:
     try:
         # Intentar usar la versión que retorna valores
-        name, authentication_status, username = authenticator.login('Iniciar sesión', 'main')
+        authenticator.login()
     except TypeError:
         # Fallback para versiones que no retornan valores
         authenticator.login()
