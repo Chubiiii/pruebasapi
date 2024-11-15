@@ -9,7 +9,7 @@ with st.container():
     col = st.columns(1)[0]
     
     # Mostrar la imagen en la columna
-    col.image("imagen.jpg", use_column_width=True)
+    col.image("imagen.png", use_column_width=True)
     
     # Espacio flexible para empujar el botón hacia abajo
     col.empty()
