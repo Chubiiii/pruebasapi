@@ -20,6 +20,12 @@ st.set_page_config(page_title="Login", page_icon="🔑", layout="centered")
 def load_config(config_path='config.yaml'):
     with open(config_path) as file:
         return yaml.load(file, Loader=SafeLoader)
+        
+def save_config(config, config_path='config.yaml'):
+    """Guardar configuración actualizada en el archivo YAML."""
+    with open(config_path, 'w') as file:
+        yaml.dump(config, file, default_flow_style=False)
+
 
 config = load_config()
 
@@ -39,7 +45,6 @@ username = ""
 
 try:
     try:
-        # Intentar usar la versión que retorna valores
         name, authentication_status, username = authenticator.login('Iniciar sesión', location='main')
     except TypeError:
         # Fallback para versiones que no retornan valores
@@ -86,16 +91,19 @@ with st.form("registration_form"):
         elif new_username in config['credentials']['usernames']:
             st.error("El nombre de usuario ya existe.")
         else:
-            try:
-                authenticator.register_user(
-                    name=new_name,
-                    email=new_email,
-                    username=new_username,
-                    password=new_password
-                )
-                st.success("Usuario registrado exitosamente.")
+            # Hash de la contraseña
+            hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-                # Guardar los cambios en el archivo de configuración
-                save_config(config)
+            # Agregar usuario al archivo de configuración
+            config['credentials']['usernames'][new_username] = {
+                'name': new_name,
+                'email': new_email,
+                'password': hashed_password
+            }
+
+            try:
+                save_config(config)  # Guardar los cambios en el archivo
+                st.success("Usuario registrado exitosamente.")
             except Exception as e:
-                st.error(f"Error al registrar usuario: {e}")
+                st.error(f"Error al guardar configuración: {e}"
+    
