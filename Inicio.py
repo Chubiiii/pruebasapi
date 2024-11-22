@@ -57,7 +57,7 @@ if st.session_state.page == "inicio":
 
         <div class="background">
             <img src="data:image/png;base64,{image_base64}" alt="Background">
-            <div class="button-overlay button">
+            <div class="button-overlay">
                 <a href="/pages/Login" target="_self">
                     <button onclick="Streamlit.setComponentValue('login')">Continuar</button>
                 </a>
