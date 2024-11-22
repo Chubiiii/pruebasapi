@@ -68,16 +68,16 @@ if authentication_status:
     st.experimental_set_query_params(page="")  # Cambiar a la página "Home"
     st.success(f"Bienvenido/a *{name}*! Redirigiendo...")
     
-    # Botón para redirigir a Inicio
-    if st.button("Volver a Inicio"):
-        st.experimental_set_query_params(page="inicio")  # Actualizar los parámetros de la URL
-        st.experimental_rerun()  # Recargar la aplicación con los nuevos parámetros
-
 elif authentication_status is False:
     st.error('Nombre de usuario o contraseña incorrectos.')
     
 elif authentication_status is None:
     st.warning('Por favor, ingresa tu nombre de usuario y contraseña.')
+
+# Botón para redirigir a Inicio
+if st.button("Volver a Inicio"):
+    st.experimental_set_query_params(page="inicio")  # Actualizar los parámetros de la URL
+    st.experimental_rerun()  # Recargar la aplicación con los nuevos parámetros
 
 # -------------------- Registro de Nuevos Usuarios --------------------
 st.markdown("---")
