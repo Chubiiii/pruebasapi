@@ -88,7 +88,7 @@ st.markdown("""
             background-color: #005fa3;
         }
     </style>
-    <a href="/Inicio" class="back-button">Volver a la Página de Inicio</a>
+    <a href="/Inicio" class="back-button" target="_self">Volver a la Página de Inicio</a>
     """, unsafe_allow_html=True)
 
 # -------------------- Registro de Nuevos Usuarios --------------------
