@@ -44,18 +44,12 @@ authentication_status = None
 name = ""
 username = ""
 
-try:
-    try:
-        name, authentication_status, username = authenticator.login('Iniciar sesión', location='main')
-    except TypeError:
-        # Fallback para versiones que no retornan valores
-        authenticator.login()
-        name = st.session_state.get('name')
-        authentication_status = st.session_state.get('authentication_status')
-        username = st.session_state.get('username')
-except LoginError as e:
-    st.error(e)
-
+name, authentication_status, username = authenticator.login('Iniciar sesión', location='main')
+if not name:  # Si no retorna valores
+    name = st.session_state.get('name')
+    authentication_status = st.session_state.get('authentication_status')
+    username = st.session_state.get('username')
+    
 # -------------------- Post-Autenticación --------------------
 if authentication_status:
     # Mostrar opciones de cierre de sesión
@@ -101,10 +95,5 @@ with st.form("registration_form"):
                 'email': new_email,
                 'password': hashed_password
             }
-
-            try:
-                save_config(config)  # Guardar los cambios en el archivo
-                st.success("Usuario registrado exitosamente.")
-            except Exception as e:
-                st.error(f"Error al guardar configuración: {e}")
-    
+            save_config(config)  # Guardar los cambios en el archivo
+            st.success("Usuario registrado exitosamente.")
