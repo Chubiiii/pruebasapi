@@ -40,9 +40,6 @@ authenticator = stauth.Authenticate(
 
 # -------------------- Widget de Inicio de Sesión --------------------
 # Inicializar variables para evitar errores de variables no definidas
-authentication_status = None
-name = ""
-username = ""
 
 name, authentication_status, username = authenticator.login('Iniciar sesión', location='main')
 if not name:  # Si no retorna valores
