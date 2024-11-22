@@ -105,5 +105,5 @@ with st.form("registration_form"):
                 save_config(config)  # Guardar los cambios en el archivo
                 st.success("Usuario registrado exitosamente.")
             except Exception as e:
-                st.error(f"Error al guardar configuración: {e}"
+                st.error(f"Error al guardar configuración: {e}")
     
