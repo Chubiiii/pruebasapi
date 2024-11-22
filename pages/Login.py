@@ -71,11 +71,11 @@ st.markdown("---")
 st.header("Registrar Nuevo Usuario")
 
 with st.form("registration_form"):
-    new_name = st.text_input("Nombre Completo")
-    new_username = st.text_input("Nombre de Usuario")
-    new_email = st.text_input("Correo Electrónico")
-    new_password = st.text_input("Contraseña", type="password")
-    new_password_confirm = st.text_input("Confirmar Contraseña", type="password")
+    new_name = st.text_input("Nombre Completo", key="new_name")
+    new_username = st.text_input("Nombre de Usuario", key="new_username")
+    new_email = st.text_input("Correo Electrónico", key="new_email")
+    new_password = st.text_input("Contraseña", type="password", key="new_password")
+    new_password_confirm = st.text_input("Confirmar Contraseña", type="password", key="new_password_confirm    ")
     submit_button = st.form_submit_button("Registrar")
 
     if submit_button:
@@ -85,17 +85,14 @@ with st.form("registration_form"):
             st.error("El nombre de usuario ya existe.")
         else:
             try:
-                # Registrar el nuevo usuario
-                authenticator.register_user(
-                    name=new_name,
-                    email=new_email,
-                    username=new_username,
-                    password=new_password
-                )
+                # Registrar el nuevo usuario en la configuración
+                hashed_password = stauth.Hasher([new_password]).generate()[0]  # Hashear contraseña
+                config['credentials']['usernames'][new_username] = {
+                    'name': new_name,
+                    'email': new_email,
+                    'password': hashed_password
+                }
+                save_config(config)  # Guardar la configuración actualizada
                 st.success("Usuario registrado exitosamente.")
-                
-                # Guardar la configuración actualizada
-                with open('config.yaml', 'w') as file:
-                    yaml.dump(config, file, default_flow_style=False)
             except RegisterError as e:
-                st.error(e)
+                st.error(f"Error al registrar usuario: {e}")
