@@ -34,7 +34,6 @@ if st.session_state.page == "inicio":
             height: auto;
         }}
         .button-overlay {{
-            <button onclick="Streamlit.setComponentValue('login')">Continuar</button>
             position: absolute;
             bottom: 50px; /* Ajusta esta distancia desde el fondo */
             left: 50%;
