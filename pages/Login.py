@@ -26,7 +26,16 @@ def save_config(config, config_path='config.yaml'):
     """Guardar configuración actualizada en el archivo YAML."""
     with open(config_path, 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
-
+        
+#Eliminar barra lateral, o bloquearla
+hide_sidebar_style = """
+    <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
+    </style>
+"""
+st.markdown(hide_sidebar_style, unsafe_allow_html=True)
 
 config = load_config()
 
