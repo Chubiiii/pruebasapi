@@ -7,6 +7,7 @@ Libraries imported:
 - streamlit_authenticator: For handling authentication.
 """
 
+import bcrypt 
 import yaml
 import streamlit as st
 from yaml.loader import SafeLoader
