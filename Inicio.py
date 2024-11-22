@@ -51,15 +51,17 @@ st.markdown(
         padding: 15px 32px;
         font-size: 16px;
         border-radius: 10px;
-        background-color: #4CAF50;
+        background-color: transparent;
         color: white;
-        border: none;
+        border: 2px solid white; /* Borde blanco */
         cursor: pointer;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease; /* ajustes varios para el estilo del boton */
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }}
     .button-overlay button:hover {{
-        background-color: #45a049; /* efecto al pasar cursor */
+        background-color: white;
+        color: black;
+        border-color: black;
     }}
     </style>
 
