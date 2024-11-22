@@ -1,12 +1,3 @@
-"""
-Script description: Simplified login script using Streamlit-Authenticator.
-
-Libraries imported:
-- yaml: For loading configuration files.
-- streamlit: For building the web application.
-- streamlit_authenticator: For handling authentication.
-"""
-
 import bcrypt 
 import yaml
 import streamlit as st
@@ -21,13 +12,13 @@ st.set_page_config(page_title="Login", page_icon="🔑", layout="centered")
 def load_config(config_path='config.yaml'):
     with open(config_path) as file:
         return yaml.load(file, Loader=SafeLoader)
-        
+
 def save_config(config, config_path='config.yaml'):
     """Guardar configuración actualizada en el archivo YAML."""
     with open(config_path, 'w') as file:
         yaml.dump(config, file, default_flow_style=False)
-        
-#Eliminar barra lateral, o bloquearla
+
+# -------------------- Eliminar Barra Lateral --------------------
 hide_sidebar_style = """
     <style>
         [data-testid="stSidebar"] {
@@ -62,21 +53,43 @@ try:
         username = st.session_state.get('username')
 except LoginError as e:
     st.error(e)
+
 # -------------------- Post-Autenticación --------------------
 if authentication_status:
-    # Redirigir a otra página
-    st.experimental_set_query_params(page="")  # Cambiar a la página "Home"
-    st.success(f"Bienvenido/a *{name}*! Redirigiendo...")
-    
+    # Mostrar opciones de cierre de sesión
+    authenticator.logout('Cerrar sesión', 'sidebar')
+
+    # Mensaje de bienvenida y contenido protegido
+    st.sidebar.write(f'Bienvenido/a *{name}*')
+    st.title('Contenido de la Aplicación')
+    st.write("Aquí va el contenido principal de tu aplicación.")
+
 elif authentication_status is False:
     st.error('Nombre de usuario o contraseña incorrectos.')
-    
+
 elif authentication_status is None:
     st.warning('Por favor, ingresa tu nombre de usuario y contraseña.')
 
-# Botón para redirigir a Inicio
-if st.button("Volver a Inicio"):
-    st.experimental_set_query_params(page="Inicio")  # Actualizar los parámetros de la URL
+# -------------------- Botón para Volver a la Página de Inicio con HTML --------------------
+st.markdown("""
+    <style>
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            background-color: #0078D4;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #005fa3;
+        }
+    </style>
+    <a href="/Inicio" class="back-button">Volver a la Página de Inicio</a>
+    """, unsafe_allow_html=True)
 
 # -------------------- Registro de Nuevos Usuarios --------------------
 st.markdown("---")
