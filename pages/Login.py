@@ -39,14 +39,20 @@ authenticator = stauth.Authenticate(
 )
 
 # -------------------- Widget de Inicio de Sesión --------------------
-# Inicializar variables para evitar errores de variables no definidas
+authentication_status = None
+name = ""
+username = ""
 
-name, authentication_status, username = authenticator.login('Iniciar sesión', location='main')
-if not name:  # Si no retorna valores
-    name = st.session_state.get('name')
-    authentication_status = st.session_state.get('authentication_status')
-    username = st.session_state.get('username')
-    
+try:
+    try:
+        name, authentication_status, username = authenticator.login('Iniciar sesión', location='main')
+    except TypeError:
+        authenticator.login()
+        name = st.session_state.get('name')
+        authentication_status = st.session_state.get('authentication_status')
+        username = st.session_state.get('username')
+except LoginError as e:
+    st.error(e)
 # -------------------- Post-Autenticación --------------------
 if authentication_status:
     # Redirigir a otra página
