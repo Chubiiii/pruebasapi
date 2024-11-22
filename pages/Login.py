@@ -85,14 +85,16 @@ with st.form("registration_form"):
             st.error("El nombre de usuario ya existe.")
         else:
             try:
-                # Registrar el nuevo usuario en la configuración
-                hashed_password = stauth.Hasher([new_password]).generate()[0]  # Hashear contraseña
-                config['credentials']['usernames'][new_username] = {
-                    'name': new_name,
-                    'email': new_email,
-                    'password': hashed_password
-                }
-                save_config(config)  # Guardar la configuración actualizada
+                # Usar el método register_user del autenticador
+                authenticator.register_user(
+                    name=new_name,
+                    email=new_email,
+                    username=new_username,
+                    password=new_password
+                )
                 st.success("Usuario registrado exitosamente.")
+
+                # Guardar los cambios en el archivo de configuración
+                save_config(config)
             except RegisterError as e:
                 st.error(f"Error al registrar usuario: {e}")
