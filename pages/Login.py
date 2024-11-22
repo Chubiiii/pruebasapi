@@ -77,7 +77,6 @@ elif authentication_status is None:
 # Botón para redirigir a Inicio
 if st.button("Volver a Inicio"):
     st.experimental_set_query_params(page="inicio")  # Actualizar los parámetros de la URL
-    st.experimental_rerun()  # Recargar la aplicación con los nuevos parámetros
 
 # -------------------- Registro de Nuevos Usuarios --------------------
 st.markdown("---")
