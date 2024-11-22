@@ -51,7 +51,9 @@ st.markdown(
     <div class="background">
         <img src="data:image/png;base64,{image_base64}" alt="Background">
         <div class="button-overlay">
-            <button onclick="window.location.href='/pages/Login'">Continuar</button>
+            <a href="/Login" target="_self">
+                <button>Continuar</button>
+            </a>
         </div>
     </div>
     """,
