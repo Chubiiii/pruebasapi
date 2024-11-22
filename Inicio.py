@@ -6,6 +6,10 @@ import base64
 # Configuración de la página
 st.set_page_config(page_title="Inicio", page_icon="🏠", layout="wide")
 
+# Verificar parámetros de consulta
+query_params = st.experimental_get_query_params()
+page = query_params.get("page", ["inicio"])[0]
+
 # Función para cargar la imagen y convertirla a base64
 def get_image_as_base64(image_path):
     with open(image_path, "rb") as img_file:
