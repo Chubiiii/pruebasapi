@@ -52,14 +52,10 @@ if not name:  # Si no retorna valores
     
 # -------------------- Post-Autenticación --------------------
 if authentication_status:
-    # Mostrar opciones de cierre de sesión
-    authenticator.logout('Cerrar sesión', 'sidebar')
-    
-    # Mensaje de bienvenida y contenido protegido
-    st.sidebar.write(f'Bienvenido/a *{name}*')
-    st.title('Contenido de la Aplicación')
-    st.write("Aquí va el contenido principal de tu aplicación.")
-    
+    # Redirigir a otra página
+    st.experimental_set_query_params(page="")  # Cambiar a la página "Home"
+    st.success(f"Bienvenido/a *{name}*! Redirigiendo...")
+
 elif authentication_status is False:
     st.error('Nombre de usuario o contraseña incorrectos.')
     
