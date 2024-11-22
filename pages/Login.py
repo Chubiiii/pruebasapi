@@ -71,21 +71,22 @@ st.markdown("---")
 st.header("Registrar Nuevo Usuario")
 
 with st.form("registration_form"):
-    new_name = st.text_input("Nombre Completo", key="new_name")
-    new_username = st.text_input("Nombre de Usuario", key="new_username")
-    new_email = st.text_input("Correo Electrónico", key="new_email")
-    new_password = st.text_input("Contraseña", type="password", key="new_password")
-    new_password_confirm = st.text_input("Confirmar Contraseña", type="password", key="new_password_confirm    ")
+    new_name = st.text_input("Nombre Completo")
+    new_username = st.text_input("Nombre de Usuario")
+    new_email = st.text_input("Correo Electrónico")
+    new_password = st.text_input("Contraseña", type="password")
+    new_password_confirm = st.text_input("Confirmar Contraseña", type="password")
     submit_button = st.form_submit_button("Registrar")
 
     if submit_button:
-        if new_password != new_password_confirm:
+        if not new_name or not new_username or not new_email or not new_password:
+            st.error("Por favor, completa todos los campos.")
+        elif new_password != new_password_confirm:
             st.error("Las contraseñas no coinciden.")
         elif new_username in config['credentials']['usernames']:
             st.error("El nombre de usuario ya existe.")
         else:
             try:
-                # Usar el método register_user del autenticador
                 authenticator.register_user(
                     name=new_name,
                     email=new_email,
@@ -96,5 +97,5 @@ with st.form("registration_form"):
 
                 # Guardar los cambios en el archivo de configuración
                 save_config(config)
-            except RegisterError as e:
+            except Exception as e:
                 st.error(f"Error al registrar usuario: {e}")
