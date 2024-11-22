@@ -10,6 +10,15 @@ def get_image_as_base64(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
+hide_sidebar_style = """
+    <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
+    </style>
+"""
+st.markdown(hide_sidebar_style, unsafe_allow_html=True)
+
 # Ruta de la imagen
 image_path = "imagen.png"  # Asegúrate de que esta ruta sea correcta
 image_base64 = get_image_as_base64(image_path)
