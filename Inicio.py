@@ -35,7 +35,7 @@ st.markdown(
     <style>
     .background {{
         position: relative;
-        text-align: center; /* alineado al centro del contenedor
+        text-align: center; /* alineado al centro del contenedor */
     }}
     .background img {{
         width: 100%; 
@@ -63,8 +63,8 @@ st.markdown(
     }}
     </style>
 
-    /* clase fondo, aca se aplican los estilos css, se carga la imagen en una version apta para la pagina, y se referencia el boton continuar a la pagina login */
-    <div class="background">
+    
+    <div class="background"> /* clase fondo, aca se aplican los estilos css, se carga la imagen en una version apta para la pagina, y se referencia el boton continuar a la pagina login */
         <img src="data:image/png;base64,{image_base64}" alt="Background">
         <div class="button-overlay">
             <a href="/Login" target="_self">
