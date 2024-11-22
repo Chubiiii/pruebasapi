@@ -1,4 +1,4 @@
-import bcrypt 
+import bcrypt
 import yaml
 import streamlit as st
 from yaml.loader import SafeLoader
@@ -6,7 +6,7 @@ import streamlit_authenticator as stauth
 from streamlit_authenticator.utilities import LoginError
 
 # -------------------- Configuración de la Página --------------------
-st.set_page_config(page_title="Login", page_icon="🔑", layout="centered")
+st.set_page_config(page_title="Login", page_icon="🔑", layout="wide")
 
 # -------------------- Cargar Configuración --------------------
 def load_config(config_path='config.yaml'):
@@ -29,15 +29,15 @@ st.markdown("""
         }
         .main-container {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             margin: 50px auto;
-            width: 90%;
+            max-width: 900px;
         }
         .form-container {
             background-color: #7c83db;
-            padding: 20px 30px;
+            padding: 30px;
             border-radius: 15px;
-            width: 40%;
+            width: 45%;
             color: white;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -67,6 +67,7 @@ st.markdown("""
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            width: 100%;
         }
         .form-container button:hover {
             background-color: #00407a;
