@@ -3,4 +3,5 @@ streamlit-authenticator
 pandas
 matplotlib
 PyYAML
-
+yalm
+bcrypt
