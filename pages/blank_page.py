@@ -191,7 +191,7 @@ elif st.session_state.page == "categoría_2":
             st.pyplot(fig)
             
         elif st.session_state.subpage == "subcategoria_b":
-            if 'language' not in data.columns:
+            if 'language' not in pf.columns:
                 st.error("La columna 'language' no se encuentra en el dataset.")
             else:
                 st.title("Distribución de Idiomas por Género")
