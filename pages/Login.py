@@ -64,10 +64,26 @@ if authentication_status:
     st.session_state['name'] = name
     st.session_state['username'] = username
 
-    # Redirigir al usuario a la página principal
-    st.experimental_set_query_params(page="blank")
-    st.success("Inicio de sesión exitoso. Redirigiendo...")
-    st.stop()
+    # Mostrar botón para redirigir a la página en blanco
+    st.markdown("""
+        <style>
+            .redirect-button {
+                display: inline-block;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                background-color: #0078D4;
+                color: white;
+                text-decoration: none;
+                text-align: center;
+                cursor: pointer;
+            }
+            .redirect-button:hover {
+                background-color: #005fa3;
+            }
+        </style>
+        <a href="/blank_page" class="redirect-button" target="_self">Ir a la Página en Blanco</a>
+    """, unsafe_allow_html=True)
 
 elif authentication_status is False:
     st.error('Nombre de usuario o contraseña incorrectos.')
