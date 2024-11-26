@@ -275,7 +275,7 @@ elif st.session_state.page == "categoría_2":
             st.pyplot(fig)
         elif st.session_state.subpage == "subcategoria_e":
             st.header("Subcategoría E: Datos Específicos")
-            st.write("Aquí se mostrarán los datos relacionados con la Subcategoría E.")
+            st.write("malaya")
 
         if st.button("Volver atrás"):
             cambiar_pagina("inicio")
