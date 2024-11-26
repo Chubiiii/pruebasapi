@@ -2,7 +2,7 @@ import streamlit as st
 
 # Configuración de la página
 st.set_page_config(
-    page_title="Página en Blanco",
+    page_title="blank",
     page_icon="📄",
     layout="centered"
 )
