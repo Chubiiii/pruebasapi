@@ -130,15 +130,16 @@ if st.session_state.page == "inicio":
 
 # Mostrar contenido según la página seleccionada
 elif st.session_state.page == "categoría_1":
-    st.header("Contenido de Opción 1")
-    st.write("Aquí se mostrarán los datos relacionados con la Opción 1.")
-    columnas = pf.columns.tolist()
-    columna_seleccionada = st.selectbox("Selecciona una columna", columnas)
+    opciones = ["Todo"] + pf.columns.tolist()  # Agregar "Todo" a las opciones
+    seleccion = st.selectbox("Selecciona una columna para ver", opciones)
 
-    # Mostrar la columna seleccionada
-    st.write(f"Has seleccionado la columna: {columna_seleccionada}")
-    st.write(pf[columna_seleccionada])
-    
+    # Mostrar el DataFrame completo o la columna seleccionada
+    if seleccion == "Todo":
+        st.write("Base de datos completa:")
+        st.dataframe(pf)  # Muestra todo el DataFrame
+    else:
+        st.write(f"Columna seleccionada: {seleccion}")
+        st.write(pf[seleccion])
     if st.button("Volver atrás"):
         cambiar_pagina("inicio")
 
