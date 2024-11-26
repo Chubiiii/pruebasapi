@@ -276,8 +276,7 @@ elif st.session_state.page == "categoría_2":
         elif st.session_state.subpage == "subcategoria_e":
             st.header("Subcategoría E: Datos Específicos")
             def datos_cargados():
-                ruta = 'spotify_songs_dataset.csv'
-                pf = pd.read_csv(ruta, sep=';')
+                pf = pd.read_csv('spotify_songs_dataset.csv', sep=';')
                 
                 # Verificar si las columnas necesarias existen
                 if 'release_date' not in pf.columns or 'stream' not in pf.columns:
