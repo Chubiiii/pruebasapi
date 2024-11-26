@@ -273,6 +273,9 @@ elif st.session_state.page == "categoría_2":
                 ax.set_ylabel('Canción')
             plt.tight_layout()
             st.pyplot(fig)
+        elif st.session_state.subpage == "subcategoria_e":
+            st.header("Subcategoría E: Datos Específicos")
+            st.write("Aquí se mostrarán los datos relacionados con la Subcategoría E.")
 
         if st.button("Volver atrás"):
             cambiar_pagina("inicio")
