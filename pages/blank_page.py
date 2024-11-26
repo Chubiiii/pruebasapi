@@ -278,23 +278,38 @@ elif st.session_state.page == "categoría_2":
             def datos_cargados():
                 ruta = 'spotify_songs_dataset.csv'
                 pf = pd.read_csv(ruta, sep=';')
-                pf['release_date'] = pd.to_datetime(pf['release_date'], errors='coerce') 
+                
+                # Verificar si las columnas necesarias existen
+                if 'release_date' not in pf.columns or 'stream' not in pf.columns:
+                    raise ValueError("Las columnas 'release_date' o 'stream' no están en el dataset.")
+                
+                pf['release_date'] = pd.to_datetime(pf['release_date'], errors='coerce')
+                
+                # Asegurarse de que 'stream' sea numérico
+                pf['stream'] = pd.to_numeric(pf['stream'], errors='coerce')
+                
                 return pf
 
+            # Cargar los datos
             pf = datos_cargados()
-            pf = pf.dropna(subset=['release_date']) 
-            pf['year'] = pf['release_date'].dt.year  
 
+            # Eliminar filas con valores nulos en 'release_date' o 'stream'
+            pf = pf.dropna(subset=['release_date', 'stream'])
+            pf['year'] = pf['release_date'].dt.year
+
+            # Título de la aplicación
             st.title("Reproducciones según fecha de publicación")
             st.markdown(
                 "Selecciona un género para observar cómo se distribuyen las reproducciones según la fecha de publicación."
             )
 
+            # Filtrado y selección de género
             genres = pf['genre'].dropna().unique()
             selected_genre = st.selectbox("Selecciona un género:", options=genres)
 
             filtered_pf = pf[pf['genre'] == selected_genre]
 
+            # Rango de años
             min_year = int(filtered_pf['year'].min())
             max_year = int(filtered_pf['year'].max())
             rango_años = st.slider('Selecciona el rango de años:', min_year, max_year, (min_year, max_year))
@@ -303,18 +318,14 @@ elif st.session_state.page == "categoría_2":
                 (filtered_pf['year'] >= rango_años[0]) & (filtered_pf['year'] <= rango_años[1])
             ]
 
-            color_map = { 
-                "R&B": "red",
-                "Electronic": "yellow",
-                "Pop": "blue",
-                "Folk": "green",
-                "Hip-Hop": "purple",
-                "Jazz": "orange",
-                "Classical":"brown",
-                "Country":"skyblue",
-                "Reggae":"white",
-            }    
+            # Colores dinámicos para los géneros
+            def generate_color_map(genres):
+                color_map = px.colors.qualitative.Set3[:len(genres)]  # Usa colores de la paleta Set3
+                return {genre: color for genre, color in zip(genres, color_map)}
 
+            color_map = generate_color_map(filtered_pf['genre'].dropna().unique())
+
+            # Crear gráfico de dispersión
             fig = px.scatter(
                 filtered_pf,
                 x='release_date',
@@ -322,7 +333,7 @@ elif st.session_state.page == "categoría_2":
                 color='genre',
                 color_discrete_map=color_map,
                 title=f"Fecha de Publicación vs Reproducciones ({selected_genre}, {rango_años[0]}-{rango_años[1]})",
-                labels={"release_date": "Fecha de Publicación", "stream": "Reproducciones", "genre": "Genero"},
+                labels={"release_date": "Fecha de Publicación", "stream": "Reproducciones", "genre": "Género"},
                 template="plotly_white",
                 opacity=0.7
             )
