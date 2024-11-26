@@ -198,10 +198,10 @@ elif st.session_state.page == "categoría_2":
 
                 selected_genres = st.multiselect(
                     "Selecciona los géneros que deseas analizar:",
-                    options=data['genre'].dropna().unique()
+                    options=pf['genre'].dropna().unique()
                 )
 
-                filtered_data = data[data['genre'].isin(selected_genres)] if selected_genres else data
+                filtered_data = pf[pf['genre'].isin(selected_genres)] if selected_genres else pf
 
                 if filtered_data.empty:
                     st.warning("No hay datos para los géneros seleccionados.")
