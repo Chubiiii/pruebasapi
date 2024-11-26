@@ -2,6 +2,7 @@ import streamlit as st
 import base64
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 # Cargar el dataset
 pf = pd.read_csv("spotify_songs_dataset.csv")
@@ -190,14 +191,33 @@ elif st.session_state.page == "categoría_2":
             st.pyplot(fig)
             
         elif st.session_state.subpage == "subcategoria_b":
-            st.header("Subcategoría B: Distribución de Idioma")
-            st.write("Aquí se mostrarán los datos de la Subcategoría B.")
-            contador_lenguaje = pf["language"].value_counts()
-            fig, ax = plt.subplots(figsize=(10, 8))
-            ax.pie(contador_lenguaje, labels=contador_lenguaje.index, autopct='%1.1f%%', startangle=140, colors=plt.cm.tab20.colors)
-            ax.set_title('Distribución de Canciones por Idioma')
-            st.pyplot(fig)
-        
+            if 'language' not in data.columns:
+                st.error("La columna 'language' no se encuentra en el dataset.")
+            else:
+                st.title("Distribución de Idiomas por Género")
+
+                selected_genres = st.multiselect(
+                    "Selecciona los géneros que deseas analizar:",
+                    options=data['genre'].dropna().unique()
+                )
+
+                filtered_data = data[data['genre'].isin(selected_genres)] if selected_genres else data
+
+                if filtered_data.empty:
+                    st.warning("No hay datos para los géneros seleccionados.")
+                else:
+                    language_counts = filtered_data['language'].dropna().value_counts().reset_index()
+                    language_counts.columns = ['language', 'count']
+
+                    fig = px.pie(
+                        language_counts,
+                        names='language',
+                        values='count',
+                        title='Distribución de Idiomas',
+                        color_discrete_sequence=px.colors.qualitative.Set3
+                    )
+
+                    st.plotly_chart(fig)
         elif st.session_state.subpage == "subcategoria_c":
             st.header("Subcategoría C: Tendencia de Lanzamiento de Canciones")
             st.write("Aquí se mostrarán los datos de la Subcategoría C.")
