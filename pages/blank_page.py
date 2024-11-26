@@ -190,14 +190,25 @@ elif st.session_state.page == "categoría_2":
             st.pyplot(fig)
             
         elif st.session_state.subpage == "subcategoria_b":
-            st.header("Subcategoría B: Distribución de Idioma")
-            st.write("Aquí se mostrarán los datos de la Subcategoría B.")
-            contador_lenguaje = pf["language"].value_counts()
-            fig, ax = plt.subplots(figsize=(10, 8))
-            ax.pie(contador_lenguaje, labels=contador_lenguaje.index, autopct='%1.1f%%', startangle=140, colors=plt.cm.tab20.colors)
-            ax.set_title('Distribución de Canciones por Idioma')
-            st.pyplot(fig)
-        
+            idiomas_unicos = pf["language"].dropna().unique().tolist()
+            idiomas_unicos.insert(0, "Todos")
+            idioma_seleccionado = st.selectbox("Selecciona un idioma para ver su distribución", idiomas_unicos)
+            if idioma_seleccionado == "Todos":
+                # Si se selecciona 'Todos', contar las canciones por idioma
+                contador_lenguaje = pf["language"].value_counts().reset_index()
+                contador_lenguaje.columns = ['Idioma', 'Cantidad'] 
+            else:
+                # Si se selecciona un idioma específico, filtrar por idioma y contar las canciones
+                contador_lenguaje = pf[pf["language"] == idioma_seleccionado]["language"].value_counts().reset_index()
+                contador_lenguaje.columns = ['Idioma', 'Cantidad']
+            fig = px.pie(contador_lenguaje, 
+             names='Idioma', 
+             values='Cantidad', 
+             title=f'Distribución de Canciones por Idioma: {idioma_seleccionado}',
+             color='Idioma', 
+             color_discrete_sequence=px.colors.qualitative.Set3)
+             # Mostrar el gráfico en Streamlit
+            st.plotly_chart(fig)
         elif st.session_state.subpage == "subcategoria_c":
             st.header("Subcategoría C: Tendencia de Lanzamiento de Canciones")
             st.write("Aquí se mostrarán los datos de la Subcategoría C.")
