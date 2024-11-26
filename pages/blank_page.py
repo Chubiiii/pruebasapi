@@ -275,7 +275,65 @@ elif st.session_state.page == "categoría_2":
             st.pyplot(fig)
         elif st.session_state.subpage == "subcategoria_e":
             st.header("Subcategoría E: Datos Específicos")
-            st.write("malaya")
+            def datos_cargados():
+                ruta = 'spotify_songs_dataset.csv'
+                pf = pd.read_csv(ruta, sep=';')
+                pf['release_date'] = pd.to_datetime(pf['release_date'], errors='coerce') 
+                return pf
+
+            pf = datos_cargados()
+            pf = pf.dropna(subset=['release_date']) 
+            pf['year'] = pf['release_date'].dt.year  
+
+            st.title("Reproducciones según fecha de publicación")
+            st.markdown(
+                "Selecciona un género para observar cómo se distribuyen las reproducciones según la fecha de publicación."
+            )
+
+            genres = pf['genre'].dropna().unique()
+            selected_genre = st.selectbox("Selecciona un género:", options=genres)
+
+            filtered_pf = pf[pf['genre'] == selected_genre]
+
+            min_year = int(filtered_pf['year'].min())
+            max_year = int(filtered_pf['year'].max())
+            rango_años = st.slider('Selecciona el rango de años:', min_year, max_year, (min_year, max_year))
+
+            filtered_pf = filtered_pf[
+                (filtered_pf['year'] >= rango_años[0]) & (filtered_pf['year'] <= rango_años[1])
+            ]
+
+            color_map = { 
+                "R&B": "red",
+                "Electronic": "yellow",
+                "Pop": "blue",
+                "Folk": "green",
+                "Hip-Hop": "purple",
+                "Jazz": "orange",
+                "Classical":"brown",
+                "Country":"skyblue",
+                "Reggae":"white",
+            }    
+
+            fig = px.scatter(
+                filtered_pf,
+                x='release_date',
+                y='stream',
+                color='genre',
+                color_discrete_map=color_map,
+                title=f"Fecha de Publicación vs Reproducciones ({selected_genre}, {rango_años[0]}-{rango_años[1]})",
+                labels={"release_date": "Fecha de Publicación", "stream": "Reproducciones", "genre": "Genero"},
+                template="plotly_white",
+                opacity=0.7
+            )
+
+            fig.update_layout(
+                xaxis=dict(title="Fecha de Publicación"),
+                yaxis=dict(title="Reproducciones"),
+                title_font_size=16,
+            )
+
+            st.plotly_chart(fig)
 
         if st.button("Volver atrás"):
             cambiar_pagina("inicio")
