@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Cargar el dataset
-pf = pd.read_csv("Chubiiii/pruebasapi/pages/Necesarios/spotify_songs_dataset.csv")
+pf = pd.read_csv("spotify_songs_dataset.csv")
 image_path = "Chubiiii/pruebasapi/pages/Necesarios/fondo_morado.png"
 
 # Codificar la imagen en base64
