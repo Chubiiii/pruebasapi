@@ -59,10 +59,15 @@ if authentication_status:
     # Mostrar opciones de cierre de sesión
     authenticator.logout('Cerrar sesión', 'sidebar')
 
-    # Mensaje de bienvenida y contenido protegido
-    st.sidebar.write(f'Bienvenido/a *{name}*')
-    st.title('Contenido de la Aplicación')
-    st.write("Aquí va el contenido principal de tu aplicación.")
+    # Guardar estado de inicio de sesión en session_state
+    st.session_state['authentication_status'] = authentication_status
+    st.session_state['name'] = name
+    st.session_state['username'] = username
+
+    # Redirigir al usuario a la página principal
+    st.experimental_set_query_params(page="blank")
+    st.success("Inicio de sesión exitoso. Redirigiendo...")
+    st.stop()
 
 elif authentication_status is False:
     st.error('Nombre de usuario o contraseña incorrectos.')
