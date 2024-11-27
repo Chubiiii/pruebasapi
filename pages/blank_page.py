@@ -283,6 +283,7 @@ elif st.session_state.page == "categoría_2":
             # Filtrar géneros
             genres = pf['genre'].dropna().unique()  # Obtener géneros únicos
             selected_genre = st.selectbox("Selecciona un género:", options=genres)
+            pf['year'] = pf['release_date'].dt.year
 
             # Filtrar datos por género seleccionado
             filtered_pf = pf[pf['genre'] == selected_genre]
