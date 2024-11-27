@@ -279,8 +279,9 @@ elif st.session_state.page == "categoría_2":
             st.markdown(
                 "Selecciona un género para observar cómo se distribuyen las reproducciones según la fecha de publicación."
             )
-
+    
             # Filtrar géneros
+            pf = pd.read_csv("spotify_songs_dataset.csv")
             genres = pf['genre'].dropna().unique()  # Obtener géneros únicos
             selected_genre = st.selectbox("Selecciona un género:", options=genres)
             pf['year'] = pf['release_date'].dt.year
