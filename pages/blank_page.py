@@ -281,24 +281,23 @@ elif st.session_state.page == "categoría_2":
             )
 
             # Filtrar géneros
-            genres = pf['genre'].dropna().unique()
+            genres = pf['genre'].dropna().unique()  # Obtener géneros únicos
             selected_genre = st.selectbox("Selecciona un género:", options=genres)
-            'year' = pf['release_date'].dt.year
 
-            # Filtrar el DataFrame según el género seleccionado
+            # Filtrar datos por género seleccionado
             filtered_pf = pf[pf['genre'] == selected_genre]
 
-            # Rango de años (suponiendo que ya tienes la columna 'year' calculada)
+            # Rango de años interactivo
             min_year = int(filtered_pf['year'].min())
             max_year = int(filtered_pf['year'].max())
             rango_años = st.slider('Selecciona el rango de años:', min_year, max_year, (min_year, max_year))
 
-            # Filtrar los datos según el rango de años seleccionado
+            # Filtrar datos por rango de años
             filtered_pf = filtered_pf[
                 (filtered_pf['year'] >= rango_años[0]) & (filtered_pf['year'] <= rango_años[1])
             ]
 
-            # Mapa de colores por género
+            # Definir mapa de colores para los géneros
             color_map = { 
                 "R&B": "red",
                 "Electronic": "yellow",
@@ -311,7 +310,7 @@ elif st.session_state.page == "categoría_2":
                 "Reggae": "white",
             }
 
-            # Crear el gráfico de dispersión (scatter plot)
+            # Crear gráfico de dispersión
             fig = px.scatter(
                 filtered_pf,
                 x='release_date',
@@ -324,14 +323,14 @@ elif st.session_state.page == "categoría_2":
                 opacity=0.7
             )
 
-            # Ajustes de diseño del gráfico
+            # Personalización del diseño del gráfico
             fig.update_layout(
                 xaxis=dict(title="Fecha de Publicación"),
                 yaxis=dict(title="Reproducciones"),
                 title_font_size=16,
             )
 
-            # Mostrar el gráfico en Streamlit
+            # Mostrar el gráfico
             st.plotly_chart(fig)
 
         if st.button("Volver atrás"):
